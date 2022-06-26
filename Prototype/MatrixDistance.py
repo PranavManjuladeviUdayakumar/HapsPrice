@@ -20,6 +20,9 @@ with open(os.path.join(os.sys.path[0], "Map.csv"), "r") as file:
             lst.append(int(item.strip()))
         matrix.append(lst)
 
+    file.close()
+
+
 print(matrix)
 
 # Math matrix - Index begins from 1; Python matrix - Index begins from 0
