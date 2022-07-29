@@ -1,52 +1,16 @@
-import csv
+from csv import reader
 import os
-
-
-matrix = []
-maplegend = {
-    0: 'Road',
-    1: 'House',
-    2: 'Work',
-}
-
-with open(os.path.join(os.sys.path[0], "Map.csv"), "r") as file:
-    csvfile = csv.reader(file)
-
-    i = 0
-
-    for line in csvfile:
-        lst = []
-        for item in line:
-            lst.append(int(item.strip()))
-        matrix.append(lst)
-
-    file.close()
-
-
-print(matrix)
-
-# Math matrix - Index begins from 1; Python matrix - Index begins from 0
-
-[mathrow, mathcol] = map(int, input("Math matrix address: ").split())
-
-# Convert Math index to Python index
-pyro, pycol = mathrow - 1, mathcol - 1
-
-
-print(pyro, pycol)
-print(matrix[pyro][pycol])
-pycolumnsmax, pyrowsmax = len(matrix) - 1, len(matrix[0]) - 1
 
 
 def getsurroundings(currentpyro, currentpycol, target=0):
     lst = []
-    if currentpyro + 1 <= pycolumnsmax:
+    if currentpyro + 1 <= maxcol:
         if matrix[currentpyro + 1][currentpycol] == target:
             lst.append([currentpyro+1, currentpycol])
     if currentpyro - 1 >= 0:
         if matrix[currentpyro - 1][currentpycol] == target:
             lst.append([currentpyro-1, currentpycol])
-    if currentpycol + 1 <= pyrowsmax:
+    if currentpycol + 1 <= maxrow:
         if matrix[currentpyro][currentpycol+1] == target:
             lst.append([currentpyro, currentpycol+1])
     if currentpycol - 1 >= 0:
@@ -55,24 +19,38 @@ def getsurroundings(currentpyro, currentpycol, target=0):
     return lst
 
 
-def shortestdistance(currentpyro, currentpycol, target=2, locationstraversed=[]):
-    if len(getsurroundings(currentpyro, currentpycol, target)) != 0:
-        return len(locationstraversed)
+def shortestdistance(currentrow, currentcol, travelled, target=2):
+    if len(getsurroundings(currentrow, currentcol, target)) != 0:
+        return len(travelled)
     else:
-        roadlocations = getsurroundings(currentpyro, currentpycol, 0)
+        roadlocations = getsurroundings(currentrow, currentcol, 0)
         roads = len(roadlocations)
         if roads == 0:
-            return 9**9
+            return max(maxcol, maxrow) ** 2
         else:
             distances = []
-            locationstraversed.append([currentpyro, currentpycol])
             for i in range(roads):
-                if [roadlocations[i][0], roadlocations[i][1]] not in locationstraversed:
-                    distances.append(shortestdistance(
-                        roadlocations[i][0], roadlocations[i][1], target, locationstraversed))
+                if [roadlocations[i][0], roadlocations[i][1]] not in travelled:
+                    distances.append(shortestdistance(roadlocations[i][0], roadlocations[i][1], travelled + [[currentrow, currentcol]], target))
                 else:
-                    distances.append(9**9)
+                    distances.append(max(maxcol, maxrow) ** 2)
             return min(distances)
 
 
-print(shortestdistance(pyro, pycol, 2, []))
+maplegend, matrix = {
+    0: 'Road',
+    1: 'House',
+    2: 'Work',
+}, []
+
+for line in reader(open(os.path.join(os.sys.path[0], "Map.csv"))):
+    lst = []
+    for item in line:
+        lst.append(int(item.strip()))
+    matrix.append(lst)
+del(line, lst, item)
+
+# Adjusting values to index from 0 rather than 1
+
+[row, col], maxcol, maxrow = map(lambda x: int(x) - 1, input("Matrix address: ").split()), len(matrix) - 1, len(matrix[0]) - 1
+print(shortestdistance(row, col, [], 2))
