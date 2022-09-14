@@ -1,4 +1,0 @@
-synopsis:
-'Georgia' font
-'12' font size
-Justified (right align)
