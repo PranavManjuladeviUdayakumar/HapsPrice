@@ -1,10 +1,9 @@
 #Library/Module importing
 from csv import reader
 import os
+import mysql.connector as m
 
 #Function declarations
-
-
 def getsurroundings(currentpyro, currentpycol, target=0):
     lst = []
     if currentpyro + 1 <= maxcol:
@@ -77,8 +76,7 @@ for line in reader(open(os.path.join(os.sys.path[0], f"{Map}.csv"))):
 del(line, lst, item)
 
 # Adjusting values to index from 0 rather than 1
-[row, col], maxcol, maxrow = map(lambda x: int(
-    x) - 1, input("House Location: ").split()), len(matrix) - 1, len(matrix[0]) - 1
+[row, col], maxcol, maxrow = map(lambda x: int(x) - 1, input("House Location: ").split()), len(matrix) - 1, len(matrix[0]) - 1
 
 #Price Settings
 Baseprice = 17000
@@ -110,4 +108,9 @@ print("House Price with current modifiers is: ",
 
 #MySQL extraction
 if input("Retrieve house information from MySQL? (y/n): ").lower() == 'y':
-    print('haha')
+    mc = m.connect(host= '127.0.0.1', user= 'root', password= 'amaatra', database= 'hapsprice')
+    cur = mc.cursor()
+    cur.execute(f"select * from data where row = {row} and col = {col}")
+    data = cur.fetchall()
+    for i in data:
+        print(i)
