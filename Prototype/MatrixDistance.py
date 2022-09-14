@@ -40,7 +40,14 @@ def shortestdistance(currentrow, currentcol, travelled, target=2):
 maplegend, matrix = {
     0: 'Road',
     1: 'House',
-    2: 'Work',
+    2: 'Office',
+    3: 'Church',
+    4: 'Hospital',
+    5: 'Park',
+    6: 'Water Body',
+    7: 'School',
+    8: 'RiverHouse',
+    9: 'Empty Plot'
 }, []
 
 for line in reader(open(os.path.join(os.sys.path[0], "Map.csv"))):
