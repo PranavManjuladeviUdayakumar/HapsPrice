@@ -113,5 +113,5 @@ if input("Retrieve house information from MySQL? (y/n): ").lower() == 'y':
     cur.execute(f"select * from data")
     data = cur.fetchall()
     for i in data:
-        if i[0] == row and i[1] == col:
+        if i[0] == row+1 and i[1] == col+1:
             print(i)
