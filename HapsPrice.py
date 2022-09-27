@@ -1,18 +1,18 @@
 #Library/Module importing
 from csv import reader
 import os
-#import mysql.connector as m
+import mysql.connector as m
 
 #Function declarations
 def getsurroundings(currentpyro, currentpycol, target=0):
     lst = []
-    if currentpyro + 1 <= maxcol:
+    if currentpyro + 1 <= maxrow:
         if matrix[currentpyro + 1][currentpycol] == target:
             lst.append([currentpyro+1, currentpycol])
     if currentpyro - 1 >= 0:
         if matrix[currentpyro - 1][currentpycol] == target:
             lst.append([currentpyro-1, currentpycol])
-    if currentpycol + 1 <= maxrow:
+    if currentpycol + 1 <= maxcol:
         if matrix[currentpyro][currentpycol+1] == target:
             lst.append([currentpyro, currentpycol+1])
     if currentpycol - 1 >= 0:
@@ -76,7 +76,7 @@ for line in reader(open(os.path.join(os.sys.path[0], f"{Map}.csv"))):
 del(line, lst, item)
 
 # Adjusting values to index from 0 rather than 1
-[row, col], maxcol, maxrow = map(lambda x: int(x) - 1, input("House Location: ").split()), len(matrix) - 2, len(matrix[0]) - 2
+[row, col], maxrow, maxcol = map(lambda x: int(x) - 1, input("House Location: ").split()), len(matrix) - 2, len(matrix[0]) - 2
 
 #Price Settings
 Baseprice = 17000
